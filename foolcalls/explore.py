@@ -6,7 +6,7 @@ from gensim.summarization.textcleaner import tokenize_by_word
 from gensim import similarities
 
 # get list of quarterly calls (events) generated from download_transcripts.py
-calls_raw = pd.read_csv('./extracts/foolcalls_extract_20200812.csv')
+calls_raw = pd.read_csv('./extracts/foolcalls_extract_20200814.csv')
 
 # remove nan
 calls_raw = calls_raw.dropna(subset=['text'])
@@ -48,7 +48,7 @@ tfidf = models.TfidfModel(corpus) # fit model
 corpus_tfidf = tfidf[corpus] # apply model
 
 # lsi transformation
-lsi_model = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=100)  # initialize an LSI transformation
+lsi_model = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=50)  # initialize an LSI transformation
 corpus_lsi = lsi_model[corpus_tfidf] # apply model
 
 # cosine similarity matrix
