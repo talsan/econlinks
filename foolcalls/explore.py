@@ -59,7 +59,8 @@ sims = index[corpus_lsi]
 for t in lsi_model.show_topics():
     print(t)
 
-# get top peers for each ticker
-sims = sorted(enumerate(sims), key=lambda item: -item[1])
-for i, s in enumerate(sims):
-    print(s, calls['ticker'][i])
+# get top 10 peers for each ticker
+n = len(sims)
+for i,s in enumerate(sims):
+    print(calls['ticker'].iloc[i])
+    print(calls['ticker'].iloc[s.argsort()[::-1][:n][0:10]])
