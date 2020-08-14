@@ -1,17 +1,19 @@
 from foolcalls.athena_helpers import query
 
-query_parameters = dict(return_df=False,
-                        output_bucket='fool-calls-athena-output',
-                        region='us-west-2', database='qcdb', work_group='primary',
-                        sleep_between_requests=3, query_timeout=600,
-                        cleanup=False)
+query_parameters = dict(
+    return_df=False, # return a pandas data frame? (if False: returns s3 key)
+    download_path='./extracts/foolcalls_extract_20200814.csv', # where to save locally (if None: no local download)
+    output_bucket='fool-calls-athena-output' # bucket for query output (bucket needs to exist)
+)
 
 s3_output_location = query(sql_string='SELECT '
-                                      'idx.cid as cid,call_url,ticker,company_name,'
+                                      'idx.cid as cid,'
+                                      'call_url,ticker,company_name,'
                                       'publication_time_published,publication_time_updated,period_end,'
                                       'fiscal_period_year,fiscal_period_qtr,call_date,duration_minutes,'
                                       'statement_num,section,statement_type,role,text'
                                       ' FROM fool_call_index idx '
                                       'JOIN fool_call_statements st '
-                                      'ON idx.cid = st.cid',
+                                      'ON idx.cid = st.cid ',
+                                      #'where ticker = \'AAPL\'',
                            **query_parameters)

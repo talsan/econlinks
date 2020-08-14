@@ -119,7 +119,7 @@ class AthenaQuery():
         print(athena_query_str)
 
 
-def query(sql_string, return_df=True, output_bucket='athena-query-outputs', region='us-west-2', database='qcdb',
+def query(sql_string, return_df=True, download_path=None, output_bucket='athena-query-outputs', region='us-west-2', database='qcdb',
           work_group='primary', sleep_between_requests=3, query_timeout = 600, cleanup=False):
 
     aq = AthenaQuery(sql_string, output_bucket, region, database, work_group, sleep_between_requests, query_timeout)
@@ -133,7 +133,14 @@ def query(sql_string, return_df=True, output_bucket='athena-query-outputs', regi
     if cleanup:
         pass
 
+    if download_path is not None:
+        aq.s3_client.download_file(aq.query_output_bucket, s3_key, download_path)
+
     if return_df:
-        return aq.get_query_output(s3_key)
+        if download_path is not None:
+            df = pd.read_csv(download_path, dtype=str)
+        else:
+            df = aq.get_query_output(s3_key)
+        return df
     else:
         return s3_key
