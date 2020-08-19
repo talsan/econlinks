@@ -1,4 +1,4 @@
-from foolcalls.athena_helpers import query
+from foolcalls.utils_athena import query
 
 query_parameters = dict(
     return_df=False, # return a pandas data frame? (if False: returns s3 key)
