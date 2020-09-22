@@ -3,7 +3,8 @@ from utils_athena import query
 query_parameters = dict(
     return_df=False, # return a pandas data frame? (if False: returns s3 key)
     download_path='./extracts/foolcalls_extract_20200814.csv', # where to save locally (if None: no local download)
-    output_bucket='fool-calls-athena-output' # bucket for query output (bucket needs to exist)
+    output_bucket='fool-calls-athena-output', # bucket for query output (bucket needs to exist)
+    work_group='qc'
 )
 
 s3_output_location = query(sql_string='SELECT '
@@ -14,6 +15,6 @@ s3_output_location = query(sql_string='SELECT '
                                       'statement_num,section,statement_type,role,text'
                                       ' FROM fool_call_index idx '
                                       'JOIN fool_call_statements st '
-                                      'ON idx.cid = st.cid ',
-                                      #'where ticker = \'AAPL\'',
+                                      'ON idx.cid = st.cid '
+                                      'where ticker = \'AAPL\'',
                            **query_parameters)
