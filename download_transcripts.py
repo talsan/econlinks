@@ -15,6 +15,6 @@ s3_output_location = query(sql_string='SELECT '
                                       'statement_num,section,statement_type,role,text'
                                       ' FROM fool_call_index idx '
                                       'JOIN fool_call_statements st '
-                                      'ON idx.cid = st.cid '
-                                      'where ticker = \'AAPL\'',
+                                      'ON idx.cid = st.cid ',
+                                      # 'where ticker = \'AAPL\'',
                            **query_parameters)
